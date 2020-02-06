@@ -4,6 +4,7 @@ import Button from './../../AuxiliarComponents/Button';
 import './styles.css';
 import { connect } from 'react-redux';
 import * as Actions from './../../../reduxStore/actions/dataControl';
+import Toolbar from './../../AuxiliarComponents/Toolbar';
 
 const CreateAccount = (props) => {
     const {
@@ -36,31 +37,34 @@ const CreateAccount = (props) => {
     
     return(
         <>
-            <InputText 
-                exportValue={(value) => setUsername(value)}
-                inputType="text"
-                labelValue="Usuario"
-            />
+            <Toolbar />
+            <>
+                <InputText 
+                    exportValue={(value) => setUsername(value)}
+                    inputType="text"
+                    labelValue="Usuario"
+                />
 
-            <InputText 
-                exportValue={(value) => setPassword(value)}
-                inputType="password"
-                labelValue="Senha"
-            />
+                <InputText 
+                    exportValue={(value) => setPassword(value)}
+                    inputType="password"
+                    labelValue="Senha"
+                />
 
-            <InputText 
-                exportValue={(value) => setPasswordConfirm(value)}
-                inputType="password"
-                labelValue="Confirma Senha"
-            />
+                <InputText 
+                    exportValue={(value) => setPasswordConfirm(value)}
+                    inputType="password"
+                    labelValue="Confirma Senha"
+                />
 
-            <div className='CreateAccountButtonHoc'>
-                <Button 
-                    onClick={() => createAccount()}
-                > 
-                    Criar Conta
-                </Button>
-            </div>
+                <div className='CreateAccountButtonHoc'>
+                    <Button 
+                        onClick={() => createAccount()}
+                    > 
+                        Criar Conta
+                    </Button>
+                </div>
+            </>
         </>
     );
 };

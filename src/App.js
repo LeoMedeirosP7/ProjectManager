@@ -4,10 +4,7 @@ import Toolbar from './components/AuxiliarComponents/Toolbar';
 
 const App = () => {
   return (
-    <>
-      <Toolbar />
       <Routes />
-    </>
   );
 };
 

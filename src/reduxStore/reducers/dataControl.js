@@ -1,4 +1,5 @@
 const {User, Project, Objective, Goal} = require('./../../classes');
+const arrayMove = require('array-move');
 
 const {
     newUser, 
@@ -14,7 +15,8 @@ const {
     sortGoals,
     newGoal,
     updateGoal,
-    deleteGoal
+    deleteGoal,
+    onSortEndProject
 } = require('./../actions/dataControl');
 
 const initialState={
@@ -23,6 +25,22 @@ const initialState={
 
 const dataControlReducer = (state=initialState, action) => {
     switch(action.type){
+        case onSortEndProject:{
+            let x = 0;
+            for(let item of state.users){
+                if(item === action.username){
+                    const users = [...state.users];
+                    users[x] = arrayMove(users[x], action.oldIndex, action.newIndex);
+
+                    return {
+                        ...state,
+                        users: users
+                    }
+                }
+                x++;
+            }
+        }
+     
         case newUser: {
             const curData = [...state.users];
             const {username, password} = action;

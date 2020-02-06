@@ -5,6 +5,7 @@ export const sortProjects = 'SORT_PROJECTS';
 export const newProject = 'NEW_PROJECT';
 export const updateProject = 'UPDATE_PROJECT';
 export const deleteProject = 'DELETE_PROJECT';
+export const onSortEndProject = 'ON_SORT_END_PROJECT';
 
 export const sortObjetives = 'SORT_OBJECTIVES';
 export const newObjetive = 'NEW_OBJECTIVE';
