@@ -2,7 +2,7 @@ import React from 'react';
 import './styles.css';
 
 const Button = (props) => (
-    <div className='Button'>
+    <div className='Button' onClick={props.onClick}>
         {props.children}
     </div>
 );

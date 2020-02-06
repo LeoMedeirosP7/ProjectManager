@@ -1,4 +1,5 @@
 const {User, Project, Objective, Goal} = require('./../../classes');
+
 const {
     newUser, 
     deleteUser, 
@@ -22,47 +23,71 @@ const initialState={
 
 const dataControlReducer = (state=initialState, action) => {
     switch(action.type){
-        case newUser:
-            break;
+        case newUser: {
+            const curData = [...state.users];
+            const {username, password} = action;
+            const newUserCreated = new User(username, password);
+            curData.push(newUserCreated);
+            return {
+                ...state,
+                users: curData
+            }
+        }
 
-        case deleteUser:
+        case deleteUser:{
             break;
+        }
 
-        case sortProjects:
+        case sortProjects:{
             break;
+        }
+            
 
-        case newProject:
+        case newProject:{
             break;
+        }
 
-        case updateProject:
+        case updateProject:{
             break;
+        }
 
-        case deleteProject:
+        case deleteProject:{
             break;
+        }
 
-        case sortObjetives:
+        case sortObjetives:{
             break;
+        }
 
-        case newObjetive:
+        case newObjetive:{
             break;
+        }
 
-        case updateObjetive:
+        case updateObjetive:{
             break;
+        }
 
-        case deleteObjetive:
+        case deleteObjetive:{
             break;
+        }
 
-        case sortGoals:
+        case sortGoals:{
             break;
+        }
 
-        case newGoal:
+        case newGoal:{
             break;
+        }
 
-        case updateGoal:
-            break;
 
-        case deleteGoal:
+        case updateGoal:{
             break;
+        }
+
+        case deleteGoal:{
+            break;
+        }
+        
         default:
             return state;
     }

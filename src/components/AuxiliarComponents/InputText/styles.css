@@ -11,10 +11,17 @@
     text-align: center;
 }
 
+.AppInputForm{
+    display: flex;
+    justify-content: center;
+    height: 10%;
+    width: 95%;
+    border-radius: 3px;
+}
 
 .AppInput{
-    height: 10px;
-    width: 95%;
+    height: 100%;
+    width: 100%;
     color:#555555;
     font-size: 15px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;

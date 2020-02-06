@@ -2,13 +2,32 @@ import React, { useState } from 'react';
 import InputText from '../../AuxiliarComponents/InputText';
 import './styles.css';
 import Button from './../../AuxiliarComponents/Button';
-import {NavLink} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 
 const Login = (props) => {
+    const { users } = props.dataControl;
+
     const [user, updateUser] = useState('');
     const [password, updatePassword] = useState('');
 
+    const login = () => {
+        for (let item of users){
+            console.log(item);
+            if(item.name === user){
+                if(item.password === password){
+                    debugger
+                    props.history.replace('/Gerenciador/Projetos', users);
+                    return 0;
+                }
+            }
+            debugger
+        }
+        alert('Invalid Login')
+        return 0;        
+    }
+
+    console.log(props);
     return (
         <div className='LoginPage'>
             <InputText
@@ -20,18 +39,22 @@ const Login = (props) => {
             <InputText
                 inputType="password"
                 exportValue={
-                    (value) => value
+                    (value) => updatePassword(value)
                 }
                 labelValue="Senha"
             />
 
             <div className="ButtonsHoc">
-                <NavLink to='/Gerenciador/Projetos' className='Link'><Button>Login</Button></NavLink>
-                
-                <NavLink to='/CriaConta' className='Link'><Button>Criar Conta</Button></NavLink>
+                    <Button onClick={() => props.history.push('/CriaConta')}>Criar Conta</Button>
+
+                    <Button onClick={() => login()}>Login</Button>
             </div>
         </div>
     );
 };
 
-export default Login;
+const mapStateToProps = state => ({
+    dataControl: state.dataControl,
+});
+
+export default connect(mapStateToProps)(Login);
