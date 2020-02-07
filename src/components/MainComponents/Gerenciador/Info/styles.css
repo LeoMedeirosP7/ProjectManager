@@ -1,0 +1,9 @@
+.InfoHoc{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Concluded{
+    margin: 5%;
+}

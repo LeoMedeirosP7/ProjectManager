@@ -1,6 +1,6 @@
 .Mark{
     background-color: rgb(155, 155, 155);
-    width: 40%;
+    width: 90%;
     height: 70px;
     border-radius: 2px;
     display: flex;
@@ -26,4 +26,5 @@
     width: 40px;
     height: 40px;
     padding: 0px;
+    cursor: pointer;
 }

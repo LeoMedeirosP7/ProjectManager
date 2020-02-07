@@ -1,0 +1,13 @@
+.MarkList{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.HocPage {
+    width: vw;
+    height: vh;
+    margin: 0px;
+    padding: 0px;
+}

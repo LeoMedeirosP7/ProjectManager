@@ -5,10 +5,15 @@ const Mark = (props) => {
     return (
         <div className="Mark">
             <form>
-                <input className="Check" type="checkbox"/>
+                <input className="Check" type="checkbox" />
             </form>
-            <p>{props.markName}</p>
-            <button className="RemoveButton">-</button>
+            <p>{props.mark.name}</p>
+            <button 
+                className="RemoveButton"
+                onClick={props.remove}
+            >
+                -
+            </button>
         </div>
     );
 };

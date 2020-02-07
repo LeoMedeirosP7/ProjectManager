@@ -3,20 +3,23 @@
     flex-direction: column;
     align-items: center;
     margin-top: 50px;
+    width: 98vw;
+    padding: 0px;
 }
-
 
 .AppLabel{
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     text-align: center;
+    padding: 0;
 }
 
 .AppInputForm{
     display: flex;
     justify-content: center;
-    height: 10%;
-    width: 95%;
+    height: 30%;
+    width: 95vw;
     border-radius: 3px;
+    padding: 0;
 }
 
 .AppInput{

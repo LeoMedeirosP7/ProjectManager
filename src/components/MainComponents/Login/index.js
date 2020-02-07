@@ -16,7 +16,7 @@ const Login = (props) => {
         for (let item of users){
             if(item.name === user){
                 if(item.password === password){
-                    props.history.replace('/Gerenciador/Projetos', users);
+                    props.history.replace('/Gerenciador/Projetos', item);
                     return 0;
                 }
             }
