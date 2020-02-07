@@ -4,7 +4,6 @@ const arrayMove = require('array-move');
 const {
     newUser, 
     deleteUser, 
-    sortProjects,
     newProject,
     updateProject,
     deleteProject,
@@ -26,19 +25,19 @@ const initialState={
 const dataControlReducer = (state=initialState, action) => {
     switch(action.type){
         case onSortEndProject:{
-            let x = 0;
-            for(let item of state.users){
-                if(item === action.username){
-                    const users = [...state.users];
-                    users[x] = arrayMove(users[x], action.oldIndex, action.newIndex);
-
+            debugger
+            const users = [...state.users];
+            for(let item of users){
+                if(item.name === action.username){
+                    const arr = item.projects;
+                    arrayMove( item.projects, action.oldIndex, action.newIndex );
                     return {
                         ...state,
                         users: users
                     }
                 }
-                x++;
             }
+            return state;
         }
      
         case newUser: {
@@ -54,15 +53,22 @@ const dataControlReducer = (state=initialState, action) => {
 
         case deleteUser:{
             break;
-        }
-
-        case sortProjects:{
-            break;
-        }
-            
+        }            
 
         case newProject:{
-            break;
+            const users = [...state.users];
+
+            for(let i of users){
+                if(action.username === i.name){
+                    const {username, name, description} = action;
+                    i.projects.push(new Project(username.name, name, description, false));
+                    return{
+                        ...state,
+                        users: users
+                    }
+                }
+            }
+            return state;
         }
 
         case updateProject:{
@@ -70,7 +76,24 @@ const dataControlReducer = (state=initialState, action) => {
         }
 
         case deleteProject:{
-            break;
+            const users = [...state.users];
+            for(let item of users){
+                if(action.username === item.name){
+                    for(let project of item.projects){
+                        let index = 0
+                        if(action.project === project){
+                            item.projects.splice(index, 1);
+                            debugger
+                            return {
+                                ...state,
+                                users: users
+                            }
+                        }
+                        index ++;
+                    }
+                }
+            }
+            return state;
         }
 
         case sortObjetives:{

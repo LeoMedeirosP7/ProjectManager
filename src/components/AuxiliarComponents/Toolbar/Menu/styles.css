@@ -1,0 +1,17 @@
+.Menu{
+    width: 20vw;
+    height: 100vh;
+    background-color: #CCCCCC;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+    z-index: 100;
+    position: fixed;
+}
+
+.Command{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    cursor: pointer;
+}

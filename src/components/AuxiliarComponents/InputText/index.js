@@ -5,21 +5,19 @@ const inputText = (props) => {
     const {exportValue, labelValue, inputType} = props;
 
     return(
-        <div className="InputHoc">
-            <div className="AppInputText">
+        <div className="AppInputText">
 
-                <b className="AppLabel"> {labelValue} </b>
+            <b className="AppLabel"> {labelValue} </b>
 
-                <form className="AppInputForm">
+            <form className="AppInputForm">
 
-                    <input 
-                        className="AppInput"
-                        type={inputType}
-                        onChange={ ( event ) => exportValue(event.target.value) }
-                    />
+                <input 
+                    className="AppInput"
+                    type={inputType}
+                    onChange={ ( event ) => exportValue(event.target.value) }
+                />
 
-                </form>
-            </div>
+            </form>
         </div>
     );
 }

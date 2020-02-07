@@ -5,25 +5,26 @@ import Menu from './../../AuxiliarComponents/Toolbar/Menu';
 
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 
-import * as Styles from './styles';
+import './styles.css';
 
 import {connect} from 'react-redux';
 import * as Actions from './../../../reduxStore/actions/dataControl';
 
-const {
-    MarkList,
-} = Styles;
 
 const Gerenciador = (props) => {
+
     const {
-        onSortEnd,
-        users
+        onSortEndRedux,
+        users,
+        removeProject
     }=props;
 
-
+    const onSortEnd = (itens, oldIndex, newIndex) => {
+        onSortEndRedux(oldIndex, newIndex, props.location.state.name);
+    }
 
     const returnProjects = () =>{
-        const name = props.location.state[0].name;
+        const name = props.location.state.name;
         for(let item of users){
             if(item.name === name){
                 return item.projects;
@@ -32,30 +33,40 @@ const Gerenciador = (props) => {
         return [];
     }
 
-    const projectList = returnProjects();
-    
+    const projectList = returnProjects(); 
 
+    const markRemove = (value) => {
+        removeProject(props.location.state.name, value.name);
+        setChanger(!changer);
+    }
 
     const SortableItem = SortableElement(
-        ({value}) => <Mark markName={value} />
+        ({value}) => (
+            <Mark 
+                mark={value}
+                remove={() => markRemove(value)}
+            />
+        )
     );
 
     const SortableList = SortableContainer(
         ({itens}) => {
             return (
-                <MarkList>
+                <ul className="MarkList">
                     {itens.map(
                         (value, index) => (
-                            <SortableItem key={`item=${value}`} index={index} value={value} />
+                            <SortableItem key={`item=${value.name}`} index={index} value={value} />
                         )
                     )}
-                </MarkList>
+                </ul>
             );
         }
     );
 
     const [showMenu, setShowMenu] = useState(false);
-    
+    const [changer, setChanger] = useState(false);
+
+    debugger
     return(
         <>
             <Toolbar 
@@ -66,15 +77,20 @@ const Gerenciador = (props) => {
                     //disposição do menu
                 }}
             />
+            <div className="HocPage">
+                {
+                    showMenu ? 
+                        <Menu 
+                            mode={props.match.params.mode} 
+                            replace={() => props.history.replace('/info/Projetos/Add', props.location.state)}
+                            myProjects={() => props.history.replace('/Gerenciador/Projetos', props.location.state)}
+                        />
+                    :
+                        null
+                }
 
-            {
-                showMenu ? 
-                    <Menu />
-                :
-                    null
-            }
-
-            <SortableList itens={projectList} onSortEnd={onSortEnd}/>
+                <SortableList itens={projectList} onSortEnd={onSortEnd}/>
+            </div>
         </>
     );
 };
@@ -85,13 +101,17 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-        onSortEnd: (oldIndex, newIndex, username) => dispatch( {
-                type: Actions.onSortEndProject, 
-                username: username,
-                oldIndex: oldIndex, 
-                newIndex: newIndex
-            }
-        )
+        onSortEndRedux: (oldIndex, newIndex, username) => dispatch( {
+            type: Actions.onSortEndProject, 
+            username: username,
+            oldIndex: oldIndex, 
+            newIndex: newIndex
+        }),
+        removeProject: (username, project) => dispatch({
+            type: Actions.deleteProject, 
+            username: username, 
+            project: project
+        })
     }
 );
 
