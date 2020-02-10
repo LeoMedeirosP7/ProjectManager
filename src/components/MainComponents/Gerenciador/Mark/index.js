@@ -8,6 +8,7 @@ const Mark = (props) => {
                 <input className="Check" type="checkbox" />
             </form>
             <p>{props.mark.name}</p>
+            
             <button 
                 className="RemoveButton"
                 onClick={props.remove}

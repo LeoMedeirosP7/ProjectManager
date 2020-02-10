@@ -25,12 +25,11 @@ const initialState={
 const dataControlReducer = (state=initialState, action) => {
     switch(action.type){
         case onSortEndProject:{
-            debugger
             const users = [...state.users];
             for(let item of users){
                 if(item.name === action.username){
                     const arr = item.projects;
-                    arrayMove( item.projects, action.oldIndex, action.newIndex );
+                    item.projects = arrayMove( item.projects, action.oldIndex, action.newIndex );
                     return {
                         ...state,
                         users: users
@@ -57,11 +56,10 @@ const dataControlReducer = (state=initialState, action) => {
 
         case newProject:{
             const users = [...state.users];
-
             for(let i of users){
                 if(action.username === i.name){
                     const {username, name, description} = action;
-                    i.projects.push(new Project(username.name, name, description, false));
+                    i.projects.push(new Project(username, name, description, false));
                     return{
                         ...state,
                         users: users
@@ -76,14 +74,14 @@ const dataControlReducer = (state=initialState, action) => {
         }
 
         case deleteProject:{
+            debugger
             const users = [...state.users];
             for(let item of users){
                 if(action.username === item.name){
+                    let index = 0
                     for(let project of item.projects){
-                        let index = 0
-                        if(action.project === project){
+                        if(action.project === project.name){
                             item.projects.splice(index, 1);
-                            debugger
                             return {
                                 ...state,
                                 users: users

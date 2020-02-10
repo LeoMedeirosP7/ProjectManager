@@ -19,7 +19,7 @@ const Gerenciador = (props) => {
         removeProject
     }=props;
 
-    const onSortEnd = (itens, oldIndex, newIndex) => {
+    const onSortEnd = ({oldIndex, newIndex}) => {
         onSortEndRedux(oldIndex, newIndex, props.location.state.name);
     }
 
@@ -36,8 +36,10 @@ const Gerenciador = (props) => {
     const projectList = returnProjects(); 
 
     const markRemove = (value) => {
+        debugger
         removeProject(props.location.state.name, value.name);
         setChanger(!changer);
+
     }
 
     const SortableItem = SortableElement(
@@ -66,7 +68,6 @@ const Gerenciador = (props) => {
     const [showMenu, setShowMenu] = useState(false);
     const [changer, setChanger] = useState(false);
 
-    debugger
     return(
         <>
             <Toolbar 
