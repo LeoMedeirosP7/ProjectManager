@@ -10,7 +10,6 @@ import * as dataControlActions from './../../../reduxStore/actions/dataControl';
 
 
 const Gerenciador = (props) => {
-    debugger
     const {
         onSortEndProject,
         onSortEndObjective,
@@ -22,7 +21,6 @@ const Gerenciador = (props) => {
     } = props;
 
     const findMark = (mark=[], name='') => {
-        debugger
         for(let item of mark){
             if(item.name === name)
                 return item;
@@ -64,9 +62,7 @@ const Gerenciador = (props) => {
             };
 
             onSortEnd = ({oldIndex, newIndex}) => {
-                debugger
                 onSortEndObjective(oldIndex, newIndex, props.location.state.name, project.name);
-                debugger
             }
 
             locationMenu = {...props.location.state, project};
@@ -131,7 +127,6 @@ const Gerenciador = (props) => {
 
     const [showMenu, setShowMenu] = useState(false);
     const [changer, setChanger] = useState(false);
-    debugger
     return(
         <>
             <Toolbar 

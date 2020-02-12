@@ -22,7 +22,6 @@ const initialState={
 };
 
 const dataControlReducer = (state=initialState, action) => {
-    debugger
     switch(action.type){
         
         case newUser: {
