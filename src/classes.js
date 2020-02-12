@@ -11,20 +11,22 @@ export class Goal{
 
 export class Objective{
     constructor(user, project, name, description, concluded){
-        this.user=user;
-        this.project=project;
-        this.name=name;
-        this.description=description;
-        this.concluded=concluded;
+        this.user = user;
+        this.project = project;
+        this.name = name;
+        this.description = description;
+        this.concluded = concluded;
+        this.goals = [];
     }
 }
 
 export class Project{
     constructor(user, name, description, concluded){
-        this.user=user;
-        this.name=name;
-        this.description=description;
-        this.concluded=concluded;
+        this.user = user;
+        this.name = name;
+        this.description = description;
+        this.concluded = concluded;
+        this.objectives = [];
     }
 }
 

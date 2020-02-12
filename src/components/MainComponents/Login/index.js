@@ -32,7 +32,7 @@ const Login = (props) => {
                 <InputText
                     inputType="text"
                     exportValue={(value) => updateUser(value)}
-                    labelValue="Usuário"
+                    labelValue="Usuário" 
                 />
 
                 <InputText

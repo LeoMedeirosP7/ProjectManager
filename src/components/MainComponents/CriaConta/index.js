@@ -3,7 +3,7 @@ import InputText from './../../AuxiliarComponents/InputText';
 import Button from './../../AuxiliarComponents/Button';
 import './styles.css';
 import { connect } from 'react-redux';
-import * as Actions from './../../../reduxStore/actions/dataControl';
+import {actNewUser} from './../../../reduxStore/actions/dataControl';
 import Toolbar from './../../AuxiliarComponents/Toolbar';
 
 const CreateAccount = (props) => {
@@ -74,7 +74,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    newUser: (username, password) => dispatch({type: Actions.newUser, username, password})
+    newUser: (username, password) => dispatch(
+        actNewUser(username, password)
+    )
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateAccount);

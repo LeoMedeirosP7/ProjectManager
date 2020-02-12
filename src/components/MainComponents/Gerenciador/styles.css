@@ -3,11 +3,13 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+    padding: 0;
+    margin: 0;
 }
 
 .HocPage {
-    width: vw;
-    height: vh;
+    width:98vw;
+    height: 100vh;
     margin: 0px;
     padding: 0px;
 }

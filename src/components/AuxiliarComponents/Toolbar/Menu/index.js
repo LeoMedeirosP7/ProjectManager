@@ -5,16 +5,12 @@ const Menu = (props) => {
     return(
         <div className="Menu">
             {
-                props.mode==="Projetos" ?
-                    <p 
-                        className="Command"
-                        onClick={props.replace}
-                    >
-                        Adicionar Projetos
-                    </p>
-
-                : 
-                    null
+                <p 
+                    className="Command"
+                    onClick={props.replace}
+                >
+                    Adicionar {props.mode}
+                </p>
             }
 
             <p 

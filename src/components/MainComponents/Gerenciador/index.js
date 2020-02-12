@@ -4,49 +4,109 @@ import Mark from './Mark';
 import Menu from './../../AuxiliarComponents/Toolbar/Menu';
 
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
-
 import './styles.css';
-
 import {connect} from 'react-redux';
-import * as Actions from './../../../reduxStore/actions/dataControl';
+import * as dataControlActions from './../../../reduxStore/actions/dataControl';
 
 
 const Gerenciador = (props) => {
-
+    debugger
     const {
-        onSortEndRedux,
+        onSortEndProject,
+        onSortEndObjective,
+        onSortEndGoal,
         users,
-        removeProject
-    }=props;
+        removeProject,
+        removeObjective,
+        removeGoal
+    } = props;
 
-    const onSortEnd = ({oldIndex, newIndex}) => {
-        onSortEndRedux(oldIndex, newIndex, props.location.state.name);
-    }
-
-    const returnProjects = () =>{
-        const name = props.location.state.name;
-        for(let item of users){
-            if(item.name === name){
-                return item.projects;
-            }
-        }
-        return [];
-    }
-
-    const projectList = returnProjects(); 
-
-    const markRemove = (value) => {
+    const findMark = (mark=[], name='') => {
         debugger
-        removeProject(props.location.state.name, value.name);
-        setChanger(!changer);
-
+        for(let item of mark){
+            if(item.name === name)
+                return item;
+        }
     }
+    const user = findMark(users, props.location.state.name);
+    let currentMarks = null;
+    let markClick = null;
+    let markRemove=null;
+    let onSortEnd=null;
+    let locationMenu = null;
+
+    switch(props.match.params.mode){
+        case 'Projetos': {
+            currentMarks=user.projects;
+            markClick = (value) => props.history.push(`/Gerenciador/Objetivos/${value.name}`, user);
+
+            //for remove projects
+            markRemove = (value) => {
+                removeProject(user.name, value.name);
+                setChanger(!changer);
+            };
+
+            onSortEnd = ({oldIndex, newIndex}) => {
+                onSortEndProject(oldIndex, newIndex, props.location.state.name);
+            }
+            locationMenu = props.location.state;
+            break;
+        }
+
+        case 'Objetivos': {
+            const project = findMark(user.projects, props.match.params.projectId);
+            currentMarks = project.objectives;
+            markClick=(value) => props.history.push(`/Gerenciador/Metas/${project.name}/${value.name}`, user);
+
+            markRemove = (value) => {
+                removeObjective(user.name, project.name, value.name);
+                setChanger(!changer);
+            };
+
+            onSortEnd = ({oldIndex, newIndex}) => {
+                debugger
+                onSortEndObjective(oldIndex, newIndex, props.location.state.name, project.name);
+                debugger
+            }
+
+            locationMenu = {...props.location.state, project};
+            break;
+        }
+
+        case 'Metas': {
+            const project = findMark(user.projects, props.match.params.projectId);
+            const objective = findMark(project.objectives, props.match.params.objectiveId);
+            currentMarks = objective.goals;
+            markClick=null;
+
+            markRemove = (value) => {
+                removeGoal(user.name, project.name, objective.name, value.name);
+                setChanger(!changer);
+            }
+
+            onSortEnd = ({oldIndex, newIndex}) => {
+                onSortEndGoal(oldIndex, newIndex, props.location.state.name, project.name, objective.name);
+            }
+
+            locationMenu = {...props.location.state, project, objective};
+            break;
+        }
+        default:
+            break;
+    }
+
 
     const SortableItem = SortableElement(
         ({value}) => (
             <Mark 
                 mark={value}
                 remove={() => markRemove(value)}
+                click={
+                    markClick != null ?
+                        () => markClick(value)
+                    :
+                        null
+                }
             />
         )
     );
@@ -57,7 +117,11 @@ const Gerenciador = (props) => {
                 <ul className="MarkList">
                     {itens.map(
                         (value, index) => (
-                            <SortableItem key={`item=${value.name}`} index={index} value={value} />
+                            <SortableItem 
+                                key={`item=${value.name}`} 
+                                index={index} 
+                                value={value} 
+                            />
                         )
                     )}
                 </ul>
@@ -67,7 +131,7 @@ const Gerenciador = (props) => {
 
     const [showMenu, setShowMenu] = useState(false);
     const [changer, setChanger] = useState(false);
-
+    debugger
     return(
         <>
             <Toolbar 
@@ -80,39 +144,58 @@ const Gerenciador = (props) => {
             />
             <div className="HocPage">
                 {
+                    //universalizar botão de adicionar e criar botão Info nos Marks
                     showMenu ? 
                         <Menu 
                             mode={props.match.params.mode} 
-                            replace={() => props.history.replace('/info/Projetos/Add', props.location.state)}
+                            replace={() => props.history.replace(`/info/${props.match.params.mode}/Add`, locationMenu)}
                             myProjects={() => props.history.replace('/Gerenciador/Projetos', props.location.state)}
                         />
                     :
                         null
                 }
-
-                <SortableList itens={projectList} onSortEnd={onSortEnd}/>
+                <SortableList itens={currentMarks} onSortEnd={onSortEnd} distance={1} />
             </div>
         </>
     );
 };
 
+const {
+    actOnSortEndProject,
+    actOnSortEndObjectives,
+    actOnSortEndGoals,
+    actDeleteProject,
+    actDeleteObjective,
+    actDeleteGoal,
+} = dataControlActions;
 
 const mapStateToProps = state => ({
     users: state.dataControl.users
 });
 
 const mapDispatchToProps = dispatch => ({
-        onSortEndRedux: (oldIndex, newIndex, username) => dispatch( {
-            type: Actions.onSortEndProject, 
-            username: username,
-            oldIndex: oldIndex, 
-            newIndex: newIndex
-        }),
-        removeProject: (username, project) => dispatch({
-            type: Actions.deleteProject, 
-            username: username, 
-            project: project
-        })
+        onSortEndProject: (oldIndex, newIndex, username) => dispatch( 
+            actOnSortEndProject(oldIndex, newIndex, username)
+        ),
+
+        onSortEndObjective: (oldIndex, newIndex, username, project) => dispatch(
+            actOnSortEndObjectives(oldIndex, newIndex, username, project)
+        ),
+
+        onSortEndGoal: (oldIndex, newIndex, username, project, objective) => dispatch(
+            actOnSortEndGoals(oldIndex, newIndex, username, project, objective)
+        ),
+
+
+        removeProject: (username, project) => dispatch(
+            actDeleteProject (username, project)
+        ),
+        removeObjective: (username, project, objective) => dispatch(
+            actDeleteObjective(username, project, objective)
+        ),
+        removeGoal: (username, project, objective, goal) => dispatch(
+            actDeleteGoal(username, project, objective, goal)
+        ),
     }
 );
 

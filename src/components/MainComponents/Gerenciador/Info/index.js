@@ -4,9 +4,8 @@ import Button from './../../../AuxiliarComponents/Button';
 import Toolbar from './../../../AuxiliarComponents/Toolbar';
 import Menu from './../../../AuxiliarComponents/Toolbar/Menu';
 import './styles.css';
-
 import {connect} from 'react-redux';
-import {newProject} from './../../../../reduxStore/actions/dataControl';
+import {actNewProject, actNewObjective, actNewGoal} from './../../../../reduxStore/actions/dataControl';
 
 const Info = (props) => {
     const [showMenu, setShowMenu] = useState(false);
@@ -16,15 +15,64 @@ const Info = (props) => {
 
     const {mode, method} = props.match.params;
 
+    const {addProject, addObjective, addGoal} = props;
+
     const addProjectHandler = () => {
-        props.addProject(
+        addProject(
             props.location.state.name,
             name,
             description
         );
-
         props.history.replace(`/Gerenciador/${mode}`, props.location.state);
     };
+
+    const addObjectiveHandler = () => {
+        const username = props.location.state.name;
+        const projectName = props.location.state.project.name;
+
+        addObjective(
+            username,
+            projectName,
+            name,
+            description
+        );
+        props.history.replace(`/Gerenciador/${mode}/${projectName}`, props.location.state);
+    };
+
+    const addGoalHandler = () => {
+        const username = props.location.state.name;
+        const projectName = props.location.state.project.name;
+        const objectiveName = props.location.state.objective.name;
+
+        addGoal(
+            username,
+            projectName,
+            objectiveName,
+            name,
+            description
+        );
+        props.history.replace(`/Gerenciador/${mode}/${projectName}/${objectiveName}`, props.location.state);
+    }
+
+    let onClickButton = null;
+    if(method === 'Add'){
+        switch(mode){
+            case 'Projetos':{
+                onClickButton = addProjectHandler;
+                break;
+            }
+            case 'Objetivos':{
+                onClickButton = addObjectiveHandler;
+                break;
+            }
+            case 'Metas':{
+                onClickButton = addGoalHandler;
+                break;
+            }
+            default:
+                break;
+        }
+    }
     
     return(
         <>
@@ -71,12 +119,7 @@ const Info = (props) => {
                 </form>
             
                 <Button
-                    onClick={
-                        mode === "Projetos" ?
-                            addProjectHandler
-                        :
-                            null
-                    }
+                    onClick={onClickButton}
                 >
                     {method} {mode.substr(0, mode.length -1)}
                 </Button>
@@ -86,7 +129,15 @@ const Info = (props) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    addProject: (username, name, description) => dispatch({type: newProject, username: username, name: name, description: description}),
+    addProject: (username, name, description) => dispatch(
+        actNewProject(username, name, description)
+    ),
+    addObjective: (username, project, name, description) => dispatch(
+        actNewObjective(username, project, name, description)
+    ),
+    addGoal: (username, project, objective, name, description) => dispatch(
+        actNewGoal(username, project, objective, name, description)
+    ),
 });
 
 export default connect(null, mapDispatchToProps)(Info);

@@ -3,11 +3,17 @@ import './styles.css'
 
 const Mark = (props) => {
     return (
-        <div className="Mark">
+        <div 
+            className="Mark"
+        >
             <form>
                 <input className="Check" type="checkbox" />
             </form>
-            <p>{props.mark.name}</p>
+            <p
+                className='P'
+                onClick={props.click}>
+                {props.mark.name}
+            </p>
             
             <button 
                 className="RemoveButton"
